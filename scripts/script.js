@@ -1,11 +1,6 @@
-
 /* =========================================
    1. CONTADOR DE RELACIONAMENTO
 ========================================= */
-
-// Data oficial do início do relacionamento.
-// Os meses no JavaScript começam em zero:
-// Janeiro = 0, Julho = 6.
 
 const relationshipStart = new Date(2023, 6, 18, 0, 0, 0);
 
@@ -165,31 +160,33 @@ openHeartButton.addEventListener("click", () => {
 
     // Alterar o texto do botão.
     openHeartButton.textContent = isOpen
-        ? "Fechar meu coração ♡"
-        : "Abrir meu coração ♡";
+        ? "Fechar mi corazon ♡"
+        : "Abrir mi corazon ♡";
 
     // Atualizar a mensagem.
     finalMessage.textContent = isOpen
-        ? "E é aqui que guardo uma das minhas lembranças favoritas. ❤️"
+        ? "Eu te amo demais! ❤️"
         : "Você é uma das partes mais bonitas da minha vida.";
 
 });
 
+
 /* =========================================
-   3. TRILHA SONORA - SPOTIFY
+   3. TRILHA SONORA - KARAOKE VISUAL
 ========================================= */
 
 const songs = [
     {
         title: "Cherry Waves",
         artist: "Deftones",
-        spotifyUri: "spotify:track:70L6nHORQsblY813yNqUR3?si=1e88b401c14049fa",
         cover: "assets/images/musica-01.jpg",
+
         dedication:
             "Essa música me lembra você e tudo que sinto quando estamos juntos.",
 
-        startAt: 200,
-        endAt: 240,
+        // Trecho escolhido da música, em segundos.
+        startAt: 205,
+        endAt: 250,
 
         lyrics: [
             { time: 205, text: "If like, you should stay down beneath" },
@@ -203,110 +200,42 @@ const songs = [
 
 const musicGrid = document.getElementById("musicGrid");
 
-const spotifyControllers = new Map();
-
-let spotifyAPI = null;
+let musicTimer = null;
+let currentTime = 0;
+let isPlaying = false;
+let currentSong = null;
 
 
 /* =========================================
-   4. UTILITÁRIOS
+   4. FORMATAÇÃO DO TEMPO
 ========================================= */
 
 function formatTime(seconds) {
-    const value = Math.max(0, Math.floor(seconds));
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
 
-    const minutes = Math.floor(value / 60);
-    const remaining = value % 60;
-
-    return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
+    return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
 
 /* =========================================
-   5. CRIAR OS CARTÕES
+   5. DESTAQUE DINÂMICO DAS LETRAS
 ========================================= */
 
-function renderSongs() {
-    musicGrid.innerHTML = "";
+function updateLyrics() {
+    if (!currentSong) return;
 
-    songs.forEach((song, index) => {
-        const card = document.createElement("article");
-
-        card.className = "music-card";
-
-        card.innerHTML = `
-            <div class="music-header">
-                <img
-                    class="music-cover"
-                    src="${song.cover}"
-                    alt="Capa de ${song.title}"
-                >
-
-                <div class="music-info">
-                    <h3>${song.title}</h3>
-                    <p>${song.artist}</p>
-                </div>
-            </div>
-
-            <div class="lyrics-box">
-                <div class="lyrics-content">
-                    ${song.lyrics.map((line, lineIndex) => `
-                        <p
-                            class="lyrics-line future"
-                            data-line="${lineIndex}"
-                        >${line.text}</p>
-                    `).join("")}
-                </div>
-
-                <p class="lyrics-status">
-                    Uma lembrança em forma de música ♡
-                </p>
-            </div>
-
-            <div class="music-progress">
-                <div class="music-progress-fill"></div>
-            </div>
-
-            <p class="music-time">
-                ${formatTime(song.startAt)} / ${formatTime(song.endAt)}
-            </p>
-
-            <div class="lyrics-controls">
-                <button class="lyrics-button start-button" disabled>
-                    Carregando Spotify...
-                </button>
-
-                <button class="lyrics-button secondary pause-button" disabled>
-                    Pausar
-                </button>
-            </div>
-
-            <p class="music-note">${song.dedication}</p>
-
-            <div class="spotify-container"></div>
-        `;
-
-        musicGrid.appendChild(card);
-    });
-}
-
-
-/* =========================================
-   6. ATUALIZAR A LETRA
-========================================= */
-
-function updateLyrics(card, song, position) {
-    const lines = card.querySelectorAll(".lyrics-line");
+    const lyricLines = document.querySelectorAll(".lyrics-line");
 
     let activeIndex = -1;
 
-    song.lyrics.forEach((line, index) => {
-        if (position >= line.time) {
+    currentSong.lyrics.forEach((lyric, index) => {
+        if (currentTime >= lyric.time) {
             activeIndex = index;
         }
     });
 
-    lines.forEach((line, index) => {
+    lyricLines.forEach((line, index) => {
         line.classList.remove("active", "past", "future");
 
         if (index === activeIndex) {
@@ -321,172 +250,180 @@ function updateLyrics(card, song, position) {
 
 
 /* =========================================
-   7. CRIAR E CONTROLAR OS PLAYERS
+   6. ATUALIZAÇÃO DO PLAYER VISUAL
 ========================================= */
 
-function createSpotifyPlayers() {
-    songs.forEach((song, index) => {
-        const card = musicGrid.children[index];
+function updatePlayer() {
+    if (!currentSong) return;
 
-        const playerElement = card.querySelector(".spotify-container");
+    const elapsed = currentTime - currentSong.startAt;
+    const duration = currentSong.endAt - currentSong.startAt;
 
-        const startButton = card.querySelector(".start-button");
-        const pauseButton = card.querySelector(".pause-button");
+    const percentage = Math.min(
+        100,
+        Math.max(0, (elapsed / duration) * 100)
+    );
 
-        const status = card.querySelector(".lyrics-status");
-        const progress = card.querySelector(".music-progress-fill");
-        const timeDisplay = card.querySelector(".music-time");
+    document.querySelector(".music-progress-fill").style.width =
+        `${percentage}%`;
 
-        let controller = null;
-        let isPlaying = false;
-        let finished = false;
+    document.querySelector(".music-time").textContent =
+        `${formatTime(currentTime)} / ${formatTime(currentSong.endAt)}`;
 
-        spotifyAPI.createController(
-            playerElement,
-            {
-                uri: song.spotifyUri,
-                width: "100%",
-                height: "152"
-            },
-            (embedController) => {
-                controller = embedController;
-
-                spotifyControllers.set(index, controller);
-
-                // PLAYER PRONTO
-                controller.addListener("ready", () => {
-                    startButton.disabled = false;
-                    startButton.textContent = "Sincronizar música ♡";
-
-                    status.textContent = "Tudo pronto para nossa música. ♡";
-                });
-
-                // RECEBER O TEMPO REAL DO SPOTIFY
-                controller.addListener("playback_update", (event) => {
-                    const playback = event.data;
-
-                    if (playback.playingURI !== song.spotifyUri) {
-                        return;
-                    }
-
-                    const position = playback.position / 1000;
-
-                    isPlaying = !playback.isPaused;
-
-                    updateLyrics(card, song, position);
-
-                    const elapsed = Math.max(
-                        0,
-                        position - song.startAt
-                    );
-
-                    const duration = song.endAt - song.startAt;
-
-                    const percentage = Math.min(
-                        100,
-                        Math.max(0, elapsed / duration * 100)
-                    );
-
-                    progress.style.width = `${percentage}%`;
-
-                    timeDisplay.textContent =
-                        `${formatTime(position)} / ${formatTime(song.endAt)}`;
-
-                    pauseButton.textContent = isPlaying
-                        ? "Pausar"
-                        : "Continuar";
-
-                    status.textContent = playback.isBuffering
-                        ? "Carregando música..."
-                        : playback.isPaused
-                            ? "Música pausada."
-                            : "Nossa música está tocando. ♡";
-
-                    // ENCERRAR O TRECHO ESCOLHIDO
-                    if (position >= song.endAt && !finished) {
-                        finished = true;
-
-                        controller.pause();
-
-                        startButton.textContent = "Recomeçar ♡";
-                        pauseButton.disabled = true;
-
-                        status.textContent =
-                            "Fim desse pedacinho especial. ♡";
-                    }
-                });
-
-                // INICIAR NO TEMPO CONFIGURADO
-                startButton.addEventListener("click", () => {
-                    if (song.spotifyUri.includes("SEU_ID")) {
-                        status.textContent =
-                            "Insira o ID verdadeiro da música.";
-
-                        return;
-                    }
-
-                    // Pausar outras músicas do site.
-                    spotifyControllers.forEach((other, otherIndex) => {
-                        if (otherIndex !== index) {
-                            other.pause();
-                        }
-                    });
-
-                    finished = false;
-
-                    startButton.textContent = "Carregando...";
-
-                    status.textContent = "Preparando a música ♡";
-
-                    controller.loadEntity(
-                        song.spotifyUri,
-                        false,
-                        song.startAt
-                    );
-
-                    controller.play();
-                });
-
-                // PAUSAR E RETOMAR
-                pauseButton.addEventListener("click", () => {
-                    if (!controller) return;
-
-                    if (isPlaying) {
-                        controller.pause();
-                    } else {
-                        controller.resume();
-                    }
-                });
-            }
-        );
-    });
+    updateLyrics();
 }
 
 
 /* =========================================
-   8. CARREGAR A API DO SPOTIFY
+   7. CONTROLE DO KARAOKÊ VISUAL
 ========================================= */
 
-function initializeSpotify() {
-    const script = document.createElement("script");
+function startVisualTimer() {
+    if (!currentSong || isPlaying) return;
 
-    script.src = "https://open.spotify.com/embed/iframe-api/v1";
-    script.async = true;
+    if (currentTime >= currentSong.endAt) {
+        currentTime = currentSong.startAt;
+    }
 
-    window.onSpotifyIframeApiReady = (IFrameAPI) => {
-        spotifyAPI = IFrameAPI;
+    isPlaying = true;
 
-        createSpotifyPlayers();
-    };
+    const syncButton = document.querySelector(".lyrics-button");
+    const pauseButton = document.querySelector(".pause-button");
+    const status = document.querySelector(".lyrics-status");
 
-    script.onerror = () => {
-        document.querySelectorAll(".lyrics-status").forEach((element) => {
-            element.textContent =
-                "Não foi possível carregar o Spotify. Tente novamente.";
-        });
-    };
+    syncButton.textContent = "Sincronizando ♡";
+    pauseButton.textContent = "Pausar";
+    status.textContent = "Nossa música está passando... ♡";
 
-    document.body.appendChild(script);
+    const startClock = Date.now();
+    const initialTime = currentTime;
+
+    musicTimer = setInterval(() => {
+        const elapsed = (Date.now() - startClock) / 1000;
+
+        currentTime = Math.min(
+            initialTime + elapsed,
+            currentSong.endAt
+        );
+
+        updatePlayer();
+
+        if (currentTime >= currentSong.endAt) {
+            stopVisualTimer();
+
+            syncButton.textContent = "Recomeçar ♡";
+            status.textContent = "Um trecho que sempre será nosso. ♡";
+        }
+    }, 100);
+}
+
+function stopVisualTimer() {
+    clearInterval(musicTimer);
+
+    musicTimer = null;
+    isPlaying = false;
+
+    const pauseButton = document.querySelector(".pause-button");
+
+    if (pauseButton) {
+        pauseButton.textContent = "Continuar";
+    }
+}
+
+function toggleVisualTimer() {
+    if (isPlaying) {
+        stopVisualTimer();
+        return;
+    }
+
+    startVisualTimer();
+}
+
+
+/* =========================================
+   8. RENDERIZAÇÃO DAS MÚSICAS
+========================================= */
+
+function renderSongs() {
+    musicGrid.innerHTML = "";
+
+    songs.forEach((song) => {
+        const card = document.createElement("article");
+
+        card.className = "music-card";
+
+        card.innerHTML = `
+            <div class="music-header">
+                <img
+                    src="${song.cover}"
+                    alt="Capa de ${song.title}"
+                    class="music-cover"
+                >
+
+                <div>
+                    <h3>${song.title}</h3>
+                    <p>${song.artist}</p>
+                </div>
+            </div>
+
+            <div class="lyrics-box">
+                <div class="lyrics-list">
+                    ${song.lyrics.map((lyric) => `
+                        <p class="lyrics-line future">
+                            ${lyric.text}
+                        </p>
+                    `).join("")}
+                </div>
+
+                <p class="lyrics-status">Tudo pronto para nossa música. ♡</p>
+            </div>
+
+            <div class="music-progress">
+                <div class="music-progress-fill"></div>
+            </div>
+
+            <p class="music-time">
+                ${formatTime(song.startAt)} / ${formatTime(song.endAt)}
+            </p>
+
+            <div class="lyrics-controls">
+                <button class="lyrics-button">
+                    Sincronizar música ♡
+                </button>
+
+                <button class="pause-button">
+                    Pausar
+                </button>
+            </div>
+
+            <p class="music-dedication">
+                ${song.dedication}
+            </p>
+        `;
+
+        musicGrid.appendChild(card);
+
+        card.querySelector(".lyrics-button").addEventListener(
+            "click",
+            () => {
+                currentSong = song;
+                currentTime = song.startAt;
+
+                stopVisualTimer();
+                updatePlayer();
+                startVisualTimer();
+            }
+        );
+
+        card.querySelector(".pause-button").addEventListener(
+            "click",
+            () => {
+                if (currentSong !== song) return;
+
+                toggleVisualTimer();
+            }
+        );
+    });
 }
 
 
@@ -495,4 +432,3 @@ function initializeSpotify() {
 ========================================= */
 
 renderSongs();
-initializeSpotify();

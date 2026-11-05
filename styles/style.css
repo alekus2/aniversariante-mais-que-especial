@@ -1,4 +1,3 @@
-
 /* =========================================
    1. VARIÁVEIS E CONFIGURAÇÕES GERAIS
 ========================================= */
@@ -34,6 +33,7 @@ body {
 }
 
 img {
+    display: block;
     max-width: 100%;
 }
 
@@ -44,16 +44,12 @@ img {
 
 .hero {
     min-height: 90vh;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     position: relative;
     overflow: hidden;
-
     padding: 60px 20px;
-
     background: var(--rosa);
     text-align: center;
 }
@@ -66,11 +62,9 @@ img {
 
 .eyebrow {
     display: block;
-
     font-size: 0.85rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-
     margin-bottom: 20px;
     color: #966477;
 }
@@ -89,23 +83,18 @@ img {
 .hero p {
     max-width: 550px;
     margin: auto;
-
     font-size: 1.15rem;
     line-height: 1.8;
 }
 
 .hero-button {
     display: inline-block;
-
     margin-top: 35px;
     padding: 15px 28px;
-
     background: var(--creme);
     color: var(--texto);
-
     border-radius: 30px;
     text-decoration: none;
-
     transition: 0.3s;
 }
 
@@ -141,8 +130,8 @@ img {
 .section-heading {
     max-width: 700px;
     margin: 0 auto 50px;
-    text-align: center;
     padding: 0 15px;
+    text-align: center;
 }
 
 .section-heading h2 {
@@ -151,8 +140,8 @@ img {
 }
 
 .section-heading p {
-    line-height: 1.8;
     font-size: 1.05rem;
+    line-height: 1.8;
 }
 
 
@@ -167,13 +156,10 @@ img {
 .counter-card {
     max-width: 950px;
     margin: auto;
-
-    background: var(--pessego);
     padding: 45px 30px;
-
+    background: var(--pessego);
     border-radius: 25px;
     box-shadow: var(--sombra);
-
     text-align: center;
 }
 
@@ -181,7 +167,6 @@ img {
     display: flex;
     flex-direction: column;
     gap: 8px;
-
     margin-bottom: 35px;
 }
 
@@ -201,14 +186,12 @@ img {
 }
 
 .counter-item {
-    background: var(--creme);
-    padding: 22px 8px;
-
-    border-radius: 15px;
-
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 22px 8px;
+    background: var(--creme);
+    border-radius: 15px;
 }
 
 .counter-item span {
@@ -237,20 +220,17 @@ img {
 }
 
 .photo-grid {
-    max-width: 1150px;
-    margin: auto;
-
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 35px;
+    max-width: 1150px;
+    margin: auto;
 }
 
 .photo-card {
-    background: var(--branco);
     padding: 12px 12px 25px;
-
+    background: var(--branco);
     box-shadow: var(--sombra);
-
     transform: rotate(-2deg);
     transition: transform 0.35s ease;
 }
@@ -267,14 +247,11 @@ img {
 .photo-card img {
     width: 100%;
     aspect-ratio: 4 / 5;
-
     object-fit: cover;
-    display: block;
 }
 
 .photo-card figcaption {
     padding: 18px 8px 0;
-
     text-align: center;
     line-height: 1.5;
     font-size: 0.95rem;
@@ -293,13 +270,10 @@ img {
 .dedication-card {
     max-width: 750px;
     margin: auto;
-
-    background: var(--amarelo);
     padding: 55px 40px;
-
+    background: var(--amarelo);
     border-radius: 25px;
     box-shadow: var(--sombra);
-
     text-align: center;
 }
 
@@ -322,13 +296,192 @@ img {
 
 
 /* =========================================
-   7. CORAÇÃO ANIMADO
+   7. NOSSA TRILHA SONORA - KARAOKÊ VISUAL
+========================================= */
+
+.music-section {
+    padding: 100px 7%;
+    background: var(--creme);
+}
+
+.music-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 560px);
+    justify-content: center;
+    gap: 30px;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.music-card {
+    width: 100%;
+    min-width: 0;
+    padding: 28px;
+    background: var(--rosa);
+    border-radius: 25px;
+    box-shadow: var(--sombra);
+}
+
+.music-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.music-cover {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 76px;
+    border-radius: 13px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(89, 67, 79, 0.15);
+}
+
+.music-header h3 {
+    margin-bottom: 5px;
+    font-size: 1.35rem;
+    line-height: 1.2;
+}
+
+.music-header p {
+    font-size: 0.95rem;
+}
+
+.lyrics-box {
+    min-height: 165px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 22px;
+    background: rgba(255, 255, 255, 0.38);
+    border-radius: 18px;
+    text-align: left;
+}
+
+.lyrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lyrics-line {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+    opacity: 0.35;
+    transition:
+        opacity 0.4s ease,
+        color 0.4s ease,
+        transform 0.4s ease;
+}
+
+.lyrics-line.active {
+    opacity: 1;
+    color: var(--texto);
+    transform: translateX(3px);
+}
+
+.lyrics-line.past {
+    opacity: 0.55;
+}
+
+.lyrics-line.future {
+    opacity: 0.3;
+}
+
+.lyrics-status {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.music-progress {
+    width: 100%;
+    height: 7px;
+    margin-top: 24px;
+    overflow: hidden;
+    background: rgba(89, 67, 79, 0.18);
+    border-radius: 20px;
+}
+
+.music-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #C77FA8;
+    border-radius: inherit;
+    transition: width 0.1s linear;
+}
+
+.music-time {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.lyrics-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.lyrics-button,
+.pause-button {
+    min-height: 42px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    background: var(--creme);
+    color: var(--texto);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.pause-button {
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.lyrics-button:hover,
+.pause-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+.lyrics-button:focus-visible,
+.pause-button:focus-visible {
+    outline: 3px solid var(--texto);
+    outline-offset: 3px;
+}
+
+.music-dedication {
+    margin-top: 22px;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+.spotify-container,
+.spotify-embed {
+    display: none;
+}
+
+
+/* =========================================
+   8. CORAÇÃO ANIMADO
 ========================================= */
 
 .final-section {
     padding: 100px 20px;
-    text-align: center;
     background: var(--rosa);
+    text-align: center;
 }
 
 .heart-wrapper {
@@ -337,46 +490,31 @@ img {
     align-items: center;
 }
 
+
 .heart-container {
-    width: min(300px, 75vw);
+    width: min(430px, 90vw);
     aspect-ratio: 300 / 270;
-
     position: relative;
-    margin: 25px auto 35px;
-}
-
-.heart-photo {
-    position: absolute;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-    border-radius: 18px;
-
-    box-shadow: var(--sombra);
+    margin: 35px auto 45px;
 }
 
 .heart-drawing {
     position: absolute;
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     overflow: visible;
 }
 
 .heart-left,
 .heart-right {
     fill: #D77EAA;
-
     stroke: #A95F87;
     stroke-width: 3;
     stroke-linejoin: round;
 
     transform-box: view-box;
+
     transition:
         transform 1.3s cubic-bezier(0.22, 1, 0.36, 1),
         opacity 0.8s ease;
@@ -398,19 +536,16 @@ img {
     transform: translateX(85px) rotate(12deg);
 }
 
-.heart-button {
-    border: none;
-    padding: 16px 30px;
 
+.heart-button {
+    padding: 16px 30px;
+    border: none;
+    border-radius: 30px;
     background: var(--creme);
     color: var(--texto);
-
     font-family: inherit;
     font-size: 1rem;
-
-    border-radius: 30px;
     cursor: pointer;
-
     transition: 0.3s;
 }
 
@@ -422,20 +557,19 @@ img {
 .final-message {
     max-width: 500px;
     margin: 30px auto 0;
-
     line-height: 1.8;
     font-style: italic;
 }
 
 
 /* =========================================
-   8. RODAPÉ
+   9. RODAPÉ
 ========================================= */
 
 .footer {
     padding: 35px 20px;
-    text-align: center;
     background: var(--creme);
+    text-align: center;
 }
 
 .footer p {
@@ -449,11 +583,10 @@ img {
 
 
 /* =========================================
-   9. RESPONSIVIDADE
+   10. RESPONSIVIDADE
 ========================================= */
 
 @media (max-width: 900px) {
-
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -461,11 +594,9 @@ img {
     .counter-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-
 }
 
 @media (max-width: 600px) {
-
     .hero {
         min-height: 80vh;
     }
@@ -475,7 +606,8 @@ img {
     }
 
     .counter-section,
-    .gallery-section {
+    .gallery-section,
+    .music-section {
         padding: 70px 20px;
     }
 
@@ -509,198 +641,50 @@ img {
         font-size: 1rem;
     }
 
+    .music-card {
+        padding: 20px;
+    }
+
+    .music-cover {
+        flex-basis: 70px;
+        width: 70px;
+        height: 70px;
+    }
+
+    .music-header h3 {
+        font-size: 1.15rem;
+    }
+
+    .lyrics-box {
+        min-height: 155px;
+        padding: 18px;
+    }
+
+    .lyrics-line {
+        font-size: 0.98rem;
+    }
+
+    .lyrics-controls {
+        gap: 9px;
+    }
+
+    .lyrics-button,
+    .pause-button {
+        padding: 11px 16px;
+        font-size: 0.85rem;
+    }
+
     .final-section {
         padding: 75px 20px;
     }
-
 }
-
-/* =========================================
-   11. KARAOKE - NOSSA TRILHA SONORA
-========================================= */
-
-.music-section {
-    padding: 100px 7%;
-    background: var(--creme);
-}
-
-.music-grid {
-    max-width: 950px;
-    margin: auto;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 35px;
-}
-
-.music-card {
-    background: var(--rosa);
-    border-radius: 25px;
-    padding: 30px;
-
-    box-shadow: var(--sombra);
-
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-}
-
-.music-card:nth-child(even) {
-    background: var(--pessego);
-}
-
-.music-header {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
-.music-cover {
-    width: 85px;
-    height: 85px;
-
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-.music-info h3 {
-    font-size: 1.4rem;
-    margin-bottom: 8px;
-}
-
-.music-info p {
-    font-size: 0.95rem;
-}
-
-.lyrics-box {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 18px;
-    padding: 25px;
-
-    min-height: 230px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 13px;
-}
-
-.lyrics-line {
-    font-size: clamp(1.15rem, 3vw, 1.8rem);
-    font-weight: bold;
-    line-height: 1.4;
-
-    color: rgba(89, 67, 79, 0.35);
-
-    transition:
-        color 0.35s ease,
-        transform 0.35s ease,
-        opacity 0.35s ease;
-}
-
-.lyrics-line.active {
-    color: #49313C;
-    transform: translateX(7px);
-}
-
-.lyrics-line.past {
-    color: rgba(89, 67, 79, 0.65);
-}
-
-.lyrics-line.future {
-    opacity: 0.55;
-}
-
-.lyrics-status {
-    font-size: 0.85rem;
-    text-align: center;
-    opacity: 0.8;
-}
-
-.lyrics-controls {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-
-.lyrics-button {
-    border: none;
-    border-radius: 25px;
-    padding: 13px 22px;
-
-    background: var(--creme);
-    color: var(--texto);
-
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: bold;
-
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.lyrics-button:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--sombra);
-}
-
-.lyrics-button.secondary {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.music-progress {
-    width: 100%;
-    height: 7px;
-
-    background: rgba(89, 67, 79, 0.15);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.music-progress-fill {
-    width: 0%;
-    height: 100%;
-
-    background: #966477;
-    border-radius: inherit;
-
-    transition: width 0.1s linear;
-}
-
-.music-time {
-    text-align: center;
-    font-size: 0.8rem;
-    font-variant-numeric: tabular-nums;
-}
-
-.music-note {
-    font-size: 1rem;
-    line-height: 1.8;
-}
-
-.spotify-player {
-    width: 100%;
-    height: 152px;
-    border: none;
-    border-radius: 15px;
-}
-
-.spotify-link {
-    color: var(--texto);
-    font-weight: bold;
-    text-decoration: none;
-}
-
-
 
 
 /* =========================================
-   10. ACESSIBILIDADE
+   11. ACESSIBILIDADE
 ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
     html {
         scroll-behavior: auto;
     }
@@ -710,31 +694,6 @@ img {
     *::after {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
-
 }
-
-@media (max-width: 600px) {
-
-    .music-section {
-        padding: 70px 20px;
-    }
-
-    .music-card {
-        padding: 20px;
-    }
-
-    .lyrics-box {
-        padding: 20px;
-    }
-
-    .music-header {
-        gap: 12px;
-    }
-
-    .music-cover {
-        width: 70px;
-        height: 70px;
-    }
-
-}    
