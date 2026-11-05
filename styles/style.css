@@ -37,9 +37,75 @@ img {
     max-width: 100%;
 }
 
+/* =========================================
+   2. SITE BLOQUEADO ATÉ A HORA MARCADA
+========================================= */
+
+#siteContent {
+    transition: filter 0.8s ease;
+}
+
+body.site-locked #siteContent {
+    filter: blur(20px);
+    pointer-events: none;
+    user-select: none;
+}
+
+.site-lock {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: grid;
+    place-items: center;
+
+    padding: 24px;
+
+    background: rgba(20, 15, 25, 0.45);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.site-lock[hidden] {
+    display: none !important;
+}
+
+.site-lock-card {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 35px 25px;
+
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.site-lock-card h1 {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.site-lock-card p {
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+#siteCountdown {
+    font-size: 27px;
+    font-weight: bold;
+    margin: 25px 0;
+    letter-spacing: 1px;
+}
+
 
 /* =========================================
-   2. CABEÇALHO
+   3. CABEÇALHO
 ========================================= */
 
 .hero {
@@ -124,7 +190,7 @@ img {
 
 
 /* =========================================
-   3. TÍTULOS DAS SEÇÕES
+   4. TÍTULOS DAS SEÇÕES
 ========================================= */
 
 .section-heading {
@@ -146,7 +212,7 @@ img {
 
 
 /* =========================================
-   4. CONTADOR
+   5. CONTADOR
 ========================================= */
 
 .counter-section {
@@ -211,7 +277,7 @@ img {
 
 
 /* =========================================
-   5. GALERIA DE FOTOGRAFIAS
+   6. GALERIA DE FOTOGRAFIAS
 ========================================= */
 
 .gallery-section {
@@ -259,7 +325,7 @@ img {
 
 
 /* =========================================
-   6. DEDICATÓRIA
+   7. DEDICATÓRIA
 ========================================= */
 
 .dedication-section {
@@ -296,7 +362,7 @@ img {
 
 
 /* =========================================
-   7. NOSSA TRILHA SONORA - KARAOKÊ VISUAL
+   8. NOSSA TRILHA SONORA - KARAOKÊ VISUAL
 ========================================= */
 
 .music-section {
@@ -475,7 +541,7 @@ img {
 
 
 /* =========================================
-   8. CORAÇÃO ANIMADO
+   9. CORAÇÃO ANIMADO
 ========================================= */
 
 .final-section {
@@ -563,7 +629,7 @@ img {
 
 
 /* =========================================
-   9. RODAPÉ
+   10. RODAPÉ
 ========================================= */
 
 .footer {
@@ -583,7 +649,7 @@ img {
 
 
 /* =========================================
-   10. RESPONSIVIDADE
+   11. RESPONSIVIDADE
 ========================================= */
 
 @media (max-width: 900px) {
@@ -681,7 +747,7 @@ img {
 
 
 /* =========================================
-   11. ACESSIBILIDADE
+   12. ACESSIBILIDADE
 ========================================= */
 
 @media (prefers-reduced-motion: reduce) {
