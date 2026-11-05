@@ -12,7 +12,7 @@
     <title>Para o meu amor ❤️</title>
 
     <link rel="stylesheet" href="styles/style.css">
-
+    <link rel="stylesheet" href="assets/css/arvore.css">
     <script src="scripts/script.js" defer></script>
 </head>
 
@@ -271,6 +271,107 @@
 
             </section>
 
+            <section class="arvore-mensagens" id="arvore-mensagens" aria-labelledby="arvore-titulo">
+                <div class="arvore-mensagens__container">
+                    <header class="arvore-mensagens__header">
+                        <span class="arvore-mensagens__eyebrow">Um carinho de cada pessoa especial</span>
+                        <h2 id="arvore-titulo">Uma árvore cheia de carinho</h2>
+                        <p>
+                            Cada bilhete guarda um desejo, uma lembrança ou uma palavra bonita
+                            de alguém que torce pela sua felicidade.
+                        </p>
+                    </header>
+
+                    <div class="arvore-mensagens__cena" aria-label="Árvore decorativa com bilhetes enviados por amigos">
+                        <svg class="arvore-mensagens__ilustracao" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                            <g class="arvore-mensagens__galhos" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M500 565 C485 460 520 365 500 270 C490 210 450 160 385 105" />
+                                <path d="M500 565 C535 455 535 365 575 280 C610 205 680 155 755 115" />
+                                <path d="M500 565 C450 475 385 420 315 355 C250 295 210 240 175 170" />
+                                <path d="M510 565 C560 485 650 430 720 360 C785 295 820 240 845 185" />
+                                <path d="M500 370 C450 310 390 270 320 245" />
+                                <path d="M550 360 C600 300 660 260 735 240" />
+                                <path d="M430 455 C370 430 320 425 250 430" />
+                                <path d="M585 455 C650 425 710 425 780 435" />
+                            </g>
+                            <g class="arvore-mensagens__folhas">
+                                <ellipse cx="385" cy="105" rx="27" ry="13" transform="rotate(35 385 105)" />
+                                <ellipse cx="755" cy="115" rx="27" ry="13" transform="rotate(-35 755 115)" />
+                                <ellipse cx="175" cy="170" rx="27" ry="13" transform="rotate(55 175 170)" />
+                                <ellipse cx="845" cy="185" rx="27" ry="13" transform="rotate(-55 845 185)" />
+                                <ellipse cx="320" cy="245" rx="25" ry="12" transform="rotate(10 320 245)" />
+                                <ellipse cx="735" cy="240" rx="25" ry="12" transform="rotate(-10 735 240)" />
+                                <ellipse cx="250" cy="430" rx="25" ry="12" transform="rotate(5 250 430)" />
+                                <ellipse cx="780" cy="435" rx="25" ry="12" transform="rotate(-5 780 435)" />
+                            </g>
+                            <path class="arvore-mensagens__chao" d="M145 548 Q500 520 855 548" />
+                        </svg>
+
+                        <div class="arvore-mensagens__bilhetes" id="arvoreBilhetes" aria-live="polite" aria-busy="true">
+                            <p class="arvore-mensagens__carregando">Preparando os bilhetinhos… 💌</p>
+                        </div>
+                    </div>
+
+                    <p class="arvore-mensagens__contador" id="arvoreContador" aria-live="polite">
+                        Carregando mensagens…
+                    </p>
+
+                    <div class="arvore-mensagens__convite">
+                        <span class="arvore-mensagens__convite-icone" aria-hidden="true">💌</span>
+                        <h3>Deixe um carinho nesta árvore</h3>
+                        <p>Escreva uma mensagem para ela. Seu bilhete aparecerá na árvore assim que for enviado.</p>
+
+                        <form class="arvore-mensagens__formulario" id="formArvoreMensagem">
+                            <div class="arvore-mensagens__campo">
+                                <label for="arvoreNome">Seu nome ou apelido <span>(opcional)</span></label>
+                                <input
+                                    id="arvoreNome"
+                                    name="nome"
+                                    type="text"
+                                    maxlength="50"
+                                    autocomplete="nickname"
+                                    placeholder="Como ela pode te identificar?"
+                                >
+                            </div>
+
+                            <div class="arvore-mensagens__campo">
+                                <label for="arvoreMensagem">Sua mensagem</label>
+                                <textarea
+                                    id="arvoreMensagem"
+                                    name="mensagem"
+                                    rows="4"
+                                    minlength="3"
+                                    maxlength="280"
+                                    required
+                                    placeholder="Escreva um desejo, uma lembrança ou algo bonito para ela…"
+                                ></textarea>
+                                <span class="arvore-mensagens__limite" id="arvoreCaracteres">0/280</span>
+                            </div>
+
+                            <button class="arvore-mensagens__enviar" id="arvoreEnviar" type="submit">
+                                Pendurar meu bilhete ♡
+                            </button>
+
+                            <p class="arvore-mensagens__aviso">
+                                Ao enviar, sua mensagem ficará visível para todos que acessarem esta página.
+                                Não inclua informações particulares.
+                            </p>
+                            <p class="arvore-mensagens__status" id="arvoreStatus" role="status" aria-live="polite"></p>
+                        </form>
+                    </div>
+                </div>
+
+                <dialog class="arvore-mensagens__dialog" id="arvoreDialog" aria-labelledby="arvoreDialogTitulo">
+                    <div class="arvore-mensagens__dialog-conteudo">
+                        <button class="arvore-mensagens__fechar" id="arvoreFecharDialog" type="button" aria-label="Fechar mensagem">×</button>
+                        <span class="arvore-mensagens__dialog-icone" aria-hidden="true">💌</span>
+                        <p class="arvore-mensagens__dialog-assinatura" id="arvoreDialogNome"></p>
+                        <h3 id="arvoreDialogTitulo">Um recadinho para você</h3>
+                        <p class="arvore-mensagens__dialog-texto" id="arvoreDialogTexto"></p>
+                        <time class="arvore-mensagens__dialog-data" id="arvoreDialogData"></time>
+                    </div>
+                </dialog>
+        </section>
 
 
             <!-- ANIMAÇÃO FINAL -->
@@ -394,7 +495,8 @@
             (window.vaq = window.vaq || []).push(arguments);
         };
     </script>
-
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="assets/js/arvore.js"></script>
     <script defer src="/_vercel/insights/script.js"></script>
 
 </body>

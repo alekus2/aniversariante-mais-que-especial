@@ -1,0 +1,464 @@
+.arvore-mensagens {
+    --arvore-rosa: #c87696;
+    --arvore-rosa-escuro: #99536f;
+    --arvore-texto: #64515a;
+    --arvore-fundo: #fff9fb;
+    --arvore-linha: #ead7df;
+    padding: clamp(3.5rem, 8vw, 6.5rem) 1.25rem;
+    color: var(--arvore-texto);
+}
+
+.arvore-mensagens,
+.arvore-mensagens * {
+    box-sizing: border-box;
+}
+
+.arvore-mensagens__container {
+    width: min(100%, 1080px);
+    margin-inline: auto;
+}
+
+.arvore-mensagens__header {
+    max-width: 680px;
+    margin: 0 auto 2.25rem;
+    text-align: center;
+}
+
+.arvore-mensagens__eyebrow {
+    display: inline-block;
+    margin-bottom: .65rem;
+    color: var(--arvore-rosa);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.arvore-mensagens__header h2 {
+    margin: 0 0 .8rem;
+    color: var(--arvore-rosa-escuro);
+    font-size: clamp(1.8rem, 4vw, 2.65rem);
+    line-height: 1.15;
+}
+
+.arvore-mensagens__header p {
+    max-width: 590px;
+    margin: 0 auto;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.arvore-mensagens__cena {
+    position: relative;
+    isolation: isolate;
+    min-height: 300px;
+    padding: clamp(1.15rem, 3vw, 2.1rem);
+    overflow: hidden;
+    border: 1px solid rgba(207, 157, 177, .25);
+    border-radius: 28px;
+    background:
+        radial-gradient(ellipse at 50% 100%, rgba(226, 193, 173, .20), transparent 48%),
+        linear-gradient(145deg, #fffaf5, #fff1f6 58%, #f8f3ff);
+    box-shadow: 0 18px 50px rgba(151, 91, 117, .09);
+}
+
+.arvore-mensagens__ilustracao {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .72;
+    pointer-events: none;
+}
+
+.arvore-mensagens__galhos {
+    stroke: #b68b7f;
+    stroke-width: 15;
+    opacity: .25;
+}
+
+.arvore-mensagens__folhas ellipse {
+    fill: #a9c7aa;
+    opacity: .34;
+}
+
+.arvore-mensagens__chao {
+    fill: none;
+    stroke: #b68b7f;
+    stroke-width: 4;
+    opacity: .24;
+}
+
+.arvore-mensagens__bilhetes {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 185px), 1fr));
+    align-items: start;
+    gap: 1.1rem;
+    min-height: 250px;
+}
+
+.arvore-mensagens__carregando,
+.arvore-mensagens__vazio,
+.arvore-mensagens__erro {
+    grid-column: 1 / -1;
+    align-self: center;
+    max-width: 440px;
+    margin: auto;
+    padding: 1.2rem 1.5rem;
+    border: 1px dashed var(--arvore-linha);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, .86);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.arvore-mensagens__bilhete {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 190px;
+    padding: 1.55rem 1.1rem 1rem;
+    border: 0;
+    border-radius: 3px 3px 10px 3px;
+    color: #554a43;
+    text-align: left;
+    cursor: pointer;
+    box-shadow: 0 7px 16px rgba(92, 69, 72, .13);
+    transform: rotate(var(--bilhete-rotacao, -1deg));
+    transition: transform .2s ease, box-shadow .2s ease;
+    overflow-wrap: anywhere;
+}
+
+.arvore-mensagens__bilhete:nth-child(4n + 1) {
+    background: #fff0b8;
+    --bilhete-rotacao: -1.7deg;
+}
+
+.arvore-mensagens__bilhete:nth-child(4n + 2) {
+    background: #ffe1eb;
+    --bilhete-rotacao: 1.4deg;
+}
+
+.arvore-mensagens__bilhete:nth-child(4n + 3) {
+    background: #e2f1df;
+    --bilhete-rotacao: -0.8deg;
+}
+
+.arvore-mensagens__bilhete:nth-child(4n) {
+    background: #e9e2fa;
+    --bilhete-rotacao: 1.8deg;
+}
+
+.arvore-mensagens__bilhete:hover,
+.arvore-mensagens__bilhete:focus-visible {
+    z-index: 2;
+    outline: 2px solid rgba(153, 83, 111, .4);
+    outline-offset: 3px;
+    box-shadow: 0 13px 25px rgba(92, 69, 72, .19);
+    transform: translateY(-5px) rotate(0deg);
+}
+
+.arvore-mensagens__alfinete {
+    position: absolute;
+    top: .55rem;
+    left: calc(50% - 6px);
+    width: 12px;
+    height: 12px;
+    border: 2px solid rgba(255, 255, 255, .85);
+    border-radius: 50%;
+    background: #d77f98;
+    box-shadow: 0 2px 4px rgba(87, 56, 64, .25);
+}
+
+.arvore-mensagens__bilhete-texto {
+    display: -webkit-box;
+    margin: 0 0 1rem;
+    overflow: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
+
+.arvore-mensagens__bilhete-autor {
+    display: block;
+    margin-top: auto;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    opacity: .78;
+}
+
+.arvore-mensagens__bilhete-data {
+    display: block;
+    margin-top: .35rem;
+    font-size: .68rem;
+    opacity: .62;
+}
+
+.arvore-mensagens__contador {
+    margin: 1.1rem 0 2.5rem;
+    color: var(--arvore-rosa-escuro);
+    font-size: .9rem;
+    text-align: center;
+}
+
+.arvore-mensagens__convite {
+    width: min(100%, 650px);
+    margin-inline: auto;
+    padding: clamp(1.4rem, 4vw, 2.4rem);
+    border: 1px solid rgba(207, 157, 177, .3);
+    border-radius: 24px;
+    background: var(--arvore-fundo);
+    box-shadow: 0 12px 35px rgba(151, 91, 117, .08);
+}
+
+.arvore-mensagens__convite-icone {
+    display: block;
+    margin-bottom: .5rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.arvore-mensagens__convite h3 {
+    margin: 0 0 .55rem;
+    color: var(--arvore-rosa-escuro);
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    text-align: center;
+}
+
+.arvore-mensagens__convite > p {
+    margin: 0 auto 1.5rem;
+    max-width: 490px;
+    font-size: .94rem;
+    line-height: 1.65;
+    text-align: center;
+}
+
+.arvore-mensagens__formulario {
+    display: grid;
+    gap: 1.1rem;
+}
+
+.arvore-mensagens__campo {
+    display: grid;
+    gap: .45rem;
+}
+
+.arvore-mensagens__campo label {
+    color: var(--arvore-rosa-escuro);
+    font-size: .9rem;
+    font-weight: 700;
+}
+
+.arvore-mensagens__campo label span {
+    font-weight: 400;
+    opacity: .75;
+}
+
+.arvore-mensagens__campo input,
+.arvore-mensagens__campo textarea {
+    width: 100%;
+    min-width: 0;
+    padding: .9rem 1rem;
+    border: 1px solid #e5cbd6;
+    border-radius: 12px;
+    outline: none;
+    background: #fff;
+    color: #4d4248;
+    font: inherit;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.arvore-mensagens__campo textarea {
+    min-height: 125px;
+    resize: vertical;
+}
+
+.arvore-mensagens__campo input:focus,
+.arvore-mensagens__campo textarea:focus {
+    border-color: var(--arvore-rosa);
+    box-shadow: 0 0 0 3px rgba(200, 118, 150, .14);
+}
+
+.arvore-mensagens__limite {
+    justify-self: end;
+    color: #8c7b83;
+    font-size: .75rem;
+}
+
+.arvore-mensagens__enviar {
+    justify-self: center;
+    min-height: 48px;
+    padding: .85rem 1.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--arvore-rosa);
+    color: #fff;
+    font: inherit;
+    font-size: .93rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 7px 16px rgba(200, 118, 150, .2);
+    transition: background .2s ease, transform .2s ease;
+}
+
+.arvore-mensagens__enviar:hover:not(:disabled) {
+    background: var(--arvore-rosa-escuro);
+    transform: translateY(-2px);
+}
+
+.arvore-mensagens__enviar:disabled {
+    cursor: wait;
+    opacity: .65;
+}
+
+.arvore-mensagens__aviso {
+    margin: 0;
+    color: #86767d;
+    font-size: .75rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.arvore-mensagens__status {
+    min-height: 1.25rem;
+    margin: 0;
+    color: var(--arvore-rosa-escuro);
+    font-size: .85rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.arvore-mensagens__status[data-tipo="erro"] {
+    color: #a43f4b;
+}
+
+.arvore-mensagens__dialog {
+    width: min(calc(100% - 2rem), 480px);
+    max-width: 480px;
+    padding: 0;
+    border: 0;
+    border-radius: 22px;
+    background: transparent;
+    color: var(--arvore-texto);
+    box-shadow: 0 24px 80px rgba(50, 30, 40, .25);
+}
+
+.arvore-mensagens__dialog::backdrop {
+    background: rgba(54, 35, 45, .48);
+    backdrop-filter: blur(4px);
+}
+
+.arvore-mensagens__dialog-conteudo {
+    position: relative;
+    padding: 2.5rem 2rem 2rem;
+    border: 1px solid #ead8df;
+    border-radius: 22px;
+    background: #fff8e9;
+    text-align: center;
+}
+
+.arvore-mensagens__fechar {
+    position: absolute;
+    top: .65rem;
+    right: .8rem;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(153, 83, 111, .1);
+    color: var(--arvore-rosa-escuro);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.arvore-mensagens__dialog-icone {
+    display: block;
+    margin-bottom: .65rem;
+    font-size: 2.2rem;
+}
+
+.arvore-mensagens__dialog-assinatura {
+    margin: 0 0 .35rem;
+    color: var(--arvore-rosa);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.arvore-mensagens__dialog-conteudo h3 {
+    margin: 0 0 1rem;
+    color: var(--arvore-rosa-escuro);
+    font-size: 1.35rem;
+}
+
+.arvore-mensagens__dialog-texto {
+    margin: 0 0 1.25rem;
+    color: #594c4f;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.12rem;
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.arvore-mensagens__dialog-data {
+    color: #957b84;
+    font-size: .75rem;
+}
+
+@media (max-width: 600px) {
+    .arvore-mensagens {
+        padding-inline: 1rem;
+    }
+
+    .arvore-mensagens__cena {
+        padding: 1rem;
+        border-radius: 20px;
+    }
+
+    .arvore-mensagens__bilhetes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: .75rem;
+    }
+
+    .arvore-mensagens__bilhete {
+        min-height: 175px;
+        padding: 1.45rem .85rem .85rem;
+    }
+
+    .arvore-mensagens__bilhete-texto {
+        font-size: .9rem;
+    }
+
+    .arvore-mensagens__bilhete-autor {
+        font-size: .72rem;
+    }
+
+    .arvore-mensagens__dialog-conteudo {
+        padding: 2.4rem 1.35rem 1.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .arvore-mensagens__bilhetes {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arvore-mensagens *,
+    .arvore-mensagens *::before,
+    .arvore-mensagens *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
