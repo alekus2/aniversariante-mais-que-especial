@@ -1,5 +1,3 @@
-import { Analytics } from "@vercel/analytics/next"
-
 /* =========================================
    1. CONTADOR DE RELACIONAMENTO
 ========================================= */
@@ -35,8 +33,6 @@ function addDays(date, amount) {
 
     return result;
 }
-
-<Analytics />
 // Calcula e atualiza o contador.
 function updateCounter() {
 
