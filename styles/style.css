@@ -515,6 +515,185 @@ img {
 
 }
 
+/* =========================================
+   11. KARAOKE - NOSSA TRILHA SONORA
+========================================= */
+
+.music-section {
+    padding: 100px 7%;
+    background: var(--creme);
+}
+
+.music-grid {
+    max-width: 950px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 35px;
+}
+
+.music-card {
+    background: var(--rosa);
+    border-radius: 25px;
+    padding: 30px;
+
+    box-shadow: var(--sombra);
+
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.music-card:nth-child(even) {
+    background: var(--pessego);
+}
+
+.music-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.music-cover {
+    width: 85px;
+    height: 85px;
+
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.music-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.music-info p {
+    font-size: 0.95rem;
+}
+
+.lyrics-box {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 18px;
+    padding: 25px;
+
+    min-height: 230px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 13px;
+}
+
+.lyrics-line {
+    font-size: clamp(1.15rem, 3vw, 1.8rem);
+    font-weight: bold;
+    line-height: 1.4;
+
+    color: rgba(89, 67, 79, 0.35);
+
+    transition:
+        color 0.35s ease,
+        transform 0.35s ease,
+        opacity 0.35s ease;
+}
+
+.lyrics-line.active {
+    color: #49313C;
+    transform: translateX(7px);
+}
+
+.lyrics-line.past {
+    color: rgba(89, 67, 79, 0.65);
+}
+
+.lyrics-line.future {
+    opacity: 0.55;
+}
+
+.lyrics-status {
+    font-size: 0.85rem;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.lyrics-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.lyrics-button {
+    border: none;
+    border-radius: 25px;
+    padding: 13px 22px;
+
+    background: var(--creme);
+    color: var(--texto);
+
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.lyrics-button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra);
+}
+
+.lyrics-button.secondary {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.music-progress {
+    width: 100%;
+    height: 7px;
+
+    background: rgba(89, 67, 79, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.music-progress-fill {
+    width: 0%;
+    height: 100%;
+
+    background: #966477;
+    border-radius: inherit;
+
+    transition: width 0.1s linear;
+}
+
+.music-time {
+    text-align: center;
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.music-note {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.spotify-player {
+    width: 100%;
+    height: 152px;
+    border: none;
+    border-radius: 15px;
+}
+
+.spotify-link {
+    color: var(--texto);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+
+
 
 /* =========================================
    10. ACESSIBILIDADE
@@ -534,3 +713,28 @@ img {
     }
 
 }
+
+@media (max-width: 600px) {
+
+    .music-section {
+        padding: 70px 20px;
+    }
+
+    .music-card {
+        padding: 20px;
+    }
+
+    .lyrics-box {
+        padding: 20px;
+    }
+
+    .music-header {
+        gap: 12px;
+    }
+
+    .music-cover {
+        width: 70px;
+        height: 70px;
+    }
+
+}    
