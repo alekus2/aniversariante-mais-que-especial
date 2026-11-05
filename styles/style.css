@@ -1,5 +1,20 @@
 
-/* CONFIGURAÇÕES GERAIS */
+/* =========================================
+   1. VARIÁVEIS E CONFIGURAÇÕES GERAIS
+========================================= */
+
+:root {
+    --rosa: #F2B8D9;
+    --pessego: #FAD4CD;
+    --creme: #F8F3DC;
+    --amarelo: #FBF0A6;
+    --azul: #B6DFFD;
+
+    --texto: #59434F;
+    --branco: #FFFFFF;
+
+    --sombra: 0 8px 25px rgba(89, 67, 79, 0.10);
+}
 
 * {
     margin: 0;
@@ -13,92 +28,231 @@ html {
 
 body {
     font-family: Georgia, serif;
-    background: #fff8f7;
-    color: #55343d;
+    background: var(--creme);
+    color: var(--texto);
+    overflow-x: hidden;
 }
 
-/* ABERTURA */
+img {
+    max-width: 100%;
+}
+
+
+/* =========================================
+   2. CABEÇALHO
+========================================= */
 
 .hero {
-    min-height: 100vh;
+    min-height: 90vh;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    position: relative;
+    overflow: hidden;
+
+    padding: 60px 20px;
+
+    background: var(--rosa);
     text-align: center;
-    padding: 30px 20px;
-    background: linear-gradient(135deg, #ffe4e8, #fff8f7);
 }
 
 .hero-content {
-    max-width: 650px;
+    max-width: 750px;
+    position: relative;
+    z-index: 2;
 }
 
-.subtitle {
-    color: #a65c70;
-    letter-spacing: 3px;
+.eyebrow {
+    display: block;
+
+    font-size: 0.85rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    font-size: 0.8rem;
+
+    margin-bottom: 20px;
+    color: #966477;
 }
 
 .hero h1 {
-    font-size: clamp(2.2rem, 6vw, 4rem);
-    margin: 25px 0;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.15;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    display: block;
+    font-style: italic;
 }
 
 .hero p {
-    font-size: 1.1rem;
+    max-width: 550px;
+    margin: auto;
+
+    font-size: 1.15rem;
     line-height: 1.8;
 }
 
-button {
-    border: none;
-    border-radius: 30px;
-    background: #bd7185;
-    color: white;
+.hero-button {
+    display: inline-block;
+
+    margin-top: 35px;
     padding: 15px 28px;
-    margin-top: 30px;
-    cursor: pointer;
-    font-size: 1rem;
+
+    background: var(--creme);
+    color: var(--texto);
+
+    border-radius: 30px;
+    text-decoration: none;
+
     transition: 0.3s;
 }
 
-button:hover {
-    background: #974b62;
-    transform: translateY(-3px);
+.hero-button:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra);
 }
 
-/* GALERIA */
+.hero-decoration {
+    position: absolute;
+    font-size: 7rem;
+    opacity: 0.35;
+    color: var(--branco);
+}
 
-.gallery {
-    padding: 90px 7%;
+.decoration-one {
+    top: 12%;
+    left: 8%;
+    transform: rotate(-15deg);
+}
+
+.decoration-two {
+    bottom: 12%;
+    right: 10%;
+    transform: rotate(15deg);
+}
+
+
+/* =========================================
+   3. TÍTULOS DAS SEÇÕES
+========================================= */
+
+.section-heading {
+    max-width: 700px;
+    margin: 0 auto 50px;
     text-align: center;
+    padding: 0 15px;
 }
 
-.gallery h2,
-.dedication h2,
-.final-section h2 {
-    font-size: clamp(1.8rem, 4vw, 2.7rem);
+.section-heading h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
     margin-bottom: 20px;
 }
 
-.section-description {
-    margin-bottom: 40px;
+.section-heading p {
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+
+/* =========================================
+   4. CONTADOR
+========================================= */
+
+.counter-section {
+    padding: 100px 7%;
+}
+
+.counter-card {
+    max-width: 950px;
+    margin: auto;
+
+    background: var(--pessego);
+    padding: 45px 30px;
+
+    border-radius: 25px;
+    box-shadow: var(--sombra);
+
+    text-align: center;
+}
+
+.total-days {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    margin-bottom: 35px;
+}
+
+.total-days span {
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: bold;
+}
+
+.total-days small {
+    font-size: 1.1rem;
+}
+
+.counter-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+}
+
+.counter-item {
+    background: var(--creme);
+    padding: 22px 8px;
+
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.counter-item span {
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+}
+
+.counter-item small {
+    font-size: 0.85rem;
+}
+
+.counter-footer {
+    margin-top: 35px;
+    font-style: italic;
+}
+
+
+/* =========================================
+   5. GALERIA DE FOTOGRAFIAS
+========================================= */
+
+.gallery-section {
+    padding: 100px 7%;
+    background: var(--azul);
 }
 
 .photo-grid {
+    max-width: 1150px;
+    margin: auto;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    max-width: 1100px;
-    margin: auto;
+    gap: 35px;
 }
 
 .photo-card {
-    background: white;
-    padding: 12px 12px 20px;
-    box-shadow: 0 5px 20px #55343d15;
+    background: var(--branco);
+    padding: 12px 12px 25px;
+
+    box-shadow: var(--sombra);
+
     transform: rotate(-2deg);
-    transition: 0.3s;
+    transition: transform 0.35s ease;
 }
 
 .photo-card:nth-child(even) {
@@ -106,122 +260,277 @@ button:hover {
 }
 
 .photo-card:hover {
-    transform: rotate(0) translateY(-8px);
+    transform: translateY(-10px) rotate(0);
+    z-index: 2;
 }
 
 .photo-card img {
     width: 100%;
     aspect-ratio: 4 / 5;
+
     object-fit: cover;
     display: block;
 }
 
 .photo-card figcaption {
-    margin-top: 15px;
+    padding: 18px 8px 0;
+
+    text-align: center;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
-/* DEDICATÓRIA */
 
-.dedication {
-    background: #f9e5e8;
-    padding: 100px 20px;
+/* =========================================
+   6. DEDICATÓRIA
+========================================= */
+
+.dedication-section {
+    padding: 110px 20px;
+    background: var(--creme);
+}
+
+.dedication-card {
+    max-width: 750px;
+    margin: auto;
+
+    background: var(--amarelo);
+    padding: 55px 40px;
+
+    border-radius: 25px;
+    box-shadow: var(--sombra);
+
     text-align: center;
 }
 
-.dedication p {
-    max-width: 650px;
-    margin: auto;
-    font-size: 1.2rem;
-    line-height: 2;
+.dedication-card h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 30px;
 }
 
-/* CORAÇÃO */
+.dedication-card p {
+    font-size: 1.1rem;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+.dedication-signature {
+    display: block;
+    margin-top: 35px;
+    font-style: italic;
+}
+
+
+/* =========================================
+   7. CORAÇÃO ANIMADO
+========================================= */
 
 .final-section {
-    text-align: center;
     padding: 100px 20px;
+    text-align: center;
+    background: var(--rosa);
+}
+
+.heart-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .heart-container {
-    width: 230px;
-    height: 230px;
+    width: min(300px, 75vw);
+    aspect-ratio: 300 / 270;
+
     position: relative;
-    margin: 60px auto 20px;
+    margin: 25px auto 35px;
 }
 
-.final-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-}
-
-.heart-half {
+.heart-photo {
     position: absolute;
     inset: 0;
-    background: #c74766;
-    transition: transform 1.5s ease;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: 18px;
+
+    box-shadow: var(--sombra);
+}
+
+.heart-drawing {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: visible;
+}
+
+.heart-left,
+.heart-right {
+    fill: #D77EAA;
+
+    stroke: #A95F87;
+    stroke-width: 3;
+    stroke-linejoin: round;
+
+    transform-box: view-box;
+    transition:
+        transform 1.3s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.8s ease;
 }
 
 .heart-left {
-    clip-path: polygon(
-        50% 15%, 35% 0, 15% 0, 0 20%,
-        0 40%, 50% 100%, 50% 15%
-    );
+    transform-origin: right center;
 }
 
 .heart-right {
-    clip-path: polygon(
-        50% 15%, 65% 0, 85% 0, 100% 20%,
-        100% 40%, 50% 100%, 50% 15%
-    );
+    transform-origin: left center;
 }
 
 .heart-container.open .heart-left {
-    transform: translateX(-120px) rotate(-15deg);
+    transform: translateX(-85px) rotate(-12deg);
 }
 
 .heart-container.open .heart-right {
-    transform: translateX(120px) rotate(15deg);
+    transform: translateX(85px) rotate(12deg);
+}
+
+.heart-button {
+    border: none;
+    padding: 16px 30px;
+
+    background: var(--creme);
+    color: var(--texto);
+
+    font-family: inherit;
+    font-size: 1rem;
+
+    border-radius: 30px;
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.heart-button:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra);
 }
 
 .final-message {
-    margin-top: 30px;
+    max-width: 500px;
+    margin: 30px auto 0;
+
     line-height: 1.8;
+    font-style: italic;
 }
 
-footer {
-    padding: 30px;
+
+/* =========================================
+   8. RODAPÉ
+========================================= */
+
+.footer {
+    padding: 35px 20px;
     text-align: center;
-    background: #f9e5e8;
+    background: var(--creme);
 }
 
-/* RESPONSIVIDADE */
+.footer p {
+    margin-bottom: 10px;
+}
 
-@media (max-width: 768px) {
+.footer span {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+
+/* =========================================
+   9. RESPONSIVIDADE
+========================================= */
+
+@media (max-width: 900px) {
+
     .photo-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
     }
 
-    .gallery {
-        padding: 65px 5%;
+    .counter-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
+
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+
+    .hero {
+        min-height: 80vh;
+    }
+
+    .hero-decoration {
+        font-size: 4rem;
+    }
+
+    .counter-section,
+    .gallery-section {
+        padding: 70px 20px;
+    }
+
+    .counter-card {
+        padding: 30px 15px;
+    }
+
+    .counter-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
     .photo-grid {
         grid-template-columns: 1fr;
+        max-width: 350px;
     }
 
     .photo-card {
-        max-width: 320px;
-        width: 100%;
-        margin: auto;
+        transform: rotate(-1deg);
     }
 
-    .heart-container {
-        width: 190px;
-        height: 190px;
+    .photo-card:nth-child(even) {
+        transform: rotate(1deg);
     }
+
+    .dedication-card {
+        padding: 40px 22px;
+    }
+
+    .dedication-card p {
+        font-size: 1rem;
+    }
+
+    .final-section {
+        padding: 75px 20px;
+    }
+
+}
+
+
+/* =========================================
+   10. ACESSIBILIDADE
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+
 }
