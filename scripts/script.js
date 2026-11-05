@@ -2,7 +2,7 @@
    0. BLOQUEADOR DE SITE
 ========================================= */
 
-const siteUnlockAt = new Date("2026-11-05T20:00:00-04:00");
+const siteUnlockAt = new Date("2026-11-06T00:00:00-04:00");
 
 const siteContent = document.getElementById("siteContent");
 const siteLock = document.getElementById("siteLock");
