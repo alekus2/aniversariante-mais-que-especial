@@ -198,7 +198,7 @@
             atualizarStatus("Não foi possível enviar agora. Confira sua conexão e tente novamente.", "erro");
         } finally {
             botaoEnviar.disabled = false;
-            botaoEnviar.textContent = "Pendurar meu bilhete ♡";
+            botaoEnviar.textContent = "Pendurar meu bilhete ";
         }
     }
 
