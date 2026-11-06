@@ -245,7 +245,7 @@ const songs = [
 
         // Trecho escolhido da música, em segundos.
         startAt: 205,
-        endAt: 250,
+        endAt: 240,
 
         lyrics: [
             { time: 205, text: "If like, you should stay down beneath" },
@@ -360,6 +360,37 @@ function waitForAudioMetadata() {
     });
 }
 
+function seekAudio(time) {
+    if (Math.abs(audioPlayer.currentTime - time) < 0.01) {
+        return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+        const cleanup = () => {
+            audioPlayer.removeEventListener("seeked", onSeeked);
+            audioPlayer.removeEventListener("error", onError);
+        };
+        const onSeeked = () => {
+            cleanup();
+            resolve();
+        };
+        const onError = () => {
+            cleanup();
+            reject(new Error("Não foi possível sincronizar o trecho do áudio."));
+        };
+
+        audioPlayer.addEventListener("seeked", onSeeked, { once: true });
+        audioPlayer.addEventListener("error", onError, { once: true });
+
+        try {
+            audioPlayer.currentTime = time;
+        } catch (error) {
+            cleanup();
+            reject(error);
+        }
+    });
+}
+
 async function playSong(song, card, restart) {
     const isNewSong = currentSong !== song;
 
@@ -381,11 +412,21 @@ async function playSong(song, card, restart) {
     status.textContent = "Carregando música... ";
 
     try {
+        audioPlayer.muted = true;
+        const playbackResult = audioPlayer.play().then(
+            () => null,
+            error => error
+        );
+
         await waitForAudioMetadata();
-        audioPlayer.currentTime = currentTime;
+        await seekAudio(currentTime);
+        const playbackError = await playbackResult;
+        if (playbackError) throw playbackError;
+
+        audioPlayer.muted = false;
         updatePlayer();
-        await audioPlayer.play();
     } catch (error) {
+        audioPlayer.muted = false;
         isPlaying = false;
         card.querySelector(".pause-button").textContent = "Continuar";
         status.textContent = `Não foi possível reproduzir o áudio: ${error.message}`;
