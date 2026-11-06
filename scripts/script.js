@@ -619,7 +619,7 @@ function renderSongs() {
                         min="0"
                         max="1"
                         step="0.01"
-                        value="0.5"
+                        value="0.25"
                         aria-label="Volume do áudio"
                     >
                 </label>
@@ -659,7 +659,7 @@ function renderSongs() {
                 isMuted = !isMuted;
 
                 if (!isMuted && volumeSlider.valueAsNumber === 0) {
-                    volumeSlider.value = "0.5";
+                    volumeSlider.value = "0.25";
                 }
 
                 updateVolumeControls(card);
