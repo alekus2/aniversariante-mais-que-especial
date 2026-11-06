@@ -1,7 +1,7 @@
 (() => {
     "use strict";
 
-    const SUPABASE_URL = "https://diqkxxcwfsxhrjpgftgw.supabase.co/rest/v1/";
+    const SUPABASE_URL = "https://diqkxxcwfsxhrjpgftgw.supabase.co";
     const SUPABASE_PUBLIC_KEY = "sb_publishable_pqoq-q1aNR0tijhB6r8BVg_AE-dDP3G";
     const TABELA = "mensagens_arvore";
     const LIMITE_EXIBICAO = 60;
