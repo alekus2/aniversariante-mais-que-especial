@@ -241,18 +241,21 @@ const songs = [
         audio: "musicas/Cherry Waves.webm",
 
         dedication:
-            "Essa música me lembra você e tudo que sinto quando estamos juntos.",
+            "Essa música me lembra você e tudo que passamos juntos.",
 
         // Trecho escolhido da música, em segundos.
         startAt: 205,
-        endAt: 240,
+        endAt: 250,
 
         lyrics: [
-            { time: 205, text: "If like, you should stay down beneath" },
+            { time: 205, text: "If like, you should stay down beneath" }, // 3:25
             { time: 217, text: "I'll swim down" },
             { time: 223, text: "Would you?" },
             { time: 226, text: "Is that what you want?" },
-            { time: 230, text: "Would you?" }
+            { time: 230, text: "Would you?" },
+            { time: 234, text: "Is that what you want?" }, // 3:54
+            { time: 246, text: "You...."} // 4:06 
+
         ]
     }
 ];
@@ -261,12 +264,15 @@ const musicGrid = document.getElementById("musicGrid");
 
 const audioPlayer = new Audio();
 audioPlayer.preload = "auto";
+audioPlayer.volume = 0.5;
 
 let currentTime = 0;
 let isPlaying = false;
 let currentSong = null;
 let currentCard = null;
 let playbackFrame = null;
+let isMuted = false;
+let isSyncingAudio = false;
 
 
 /* =========================================
@@ -413,6 +419,7 @@ async function playSong(song, card, restart) {
     status.textContent = "Carregando música... ";
 
     try {
+        isSyncingAudio = true;
         audioPlayer.muted = true;
         const playbackResult = audioPlayer.play().then(
             () => null,
@@ -423,17 +430,42 @@ async function playSong(song, card, restart) {
         await seekAudio(targetTime);
         const playbackError = await playbackResult;
         if (playbackError) throw playbackError;
-        if (audioPlayer.paused) return;
+        if (audioPlayer.paused) {
+            isSyncingAudio = false;
+            audioPlayer.muted = isMuted;
+            return;
+        }
 
-        audioPlayer.muted = false;
+        isSyncingAudio = false;
+        audioPlayer.muted = isMuted;
         updatePlayer();
     } catch (error) {
-        audioPlayer.muted = false;
+        isSyncingAudio = false;
+        audioPlayer.muted = isMuted;
         isPlaying = false;
         card.querySelector(".pause-button").textContent = "Continuar";
         status.textContent = `Não foi possível reproduzir o áudio: ${error.message}`;
         console.error("Erro ao reproduzir a música selecionada:", error);
     }
+}
+
+function updateVolumeControls(card) {
+    const volumeSlider = card.querySelector(".volume-slider");
+    const volumeButton = card.querySelector(".volume-button");
+    const volume = volumeSlider.valueAsNumber;
+    const muted = isMuted || volume === 0;
+
+    audioPlayer.volume = volume;
+    audioPlayer.muted = isSyncingAudio || isMuted;
+    volumeSlider.setAttribute("aria-valuetext", `${Math.round(volume * 100)}%`);
+    card.querySelector(".volume-level").textContent =
+        `${Math.round(volume * 100)}%`;
+    volumeButton.textContent = muted ? "🔇" : "🔊";
+    volumeButton.setAttribute(
+        "aria-label",
+        muted ? "Ativar áudio" : "Silenciar áudio"
+    );
+    volumeButton.title = muted ? "Ativar áudio" : "Silenciar áudio";
 }
 
 audioPlayer.addEventListener("play", () => {
@@ -571,6 +603,28 @@ function renderSongs() {
                 </button>
             </div>
 
+            <div class="volume-controls">
+                <button
+                    class="volume-button"
+                    type="button"
+                    aria-label="Silenciar áudio"
+                    title="Silenciar áudio"
+                >🔊</button>
+                <label class="volume-label">
+                    Volume
+                    <input
+                        class="volume-slider"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="0.5"
+                        aria-label="Volume do áudio"
+                    >
+                </label>
+                <span class="volume-level" aria-live="polite">50%</span>
+            </div>
+
             <p class="music-dedication">
                 ${song.dedication}
             </p>
@@ -589,6 +643,25 @@ function renderSongs() {
             "click",
             () => {
                 toggleSongPlayback(song, card);
+            }
+        );
+
+        card.querySelector(".volume-slider").addEventListener(
+            "input",
+            () => updateVolumeControls(card)
+        );
+
+        card.querySelector(".volume-button").addEventListener(
+            "click",
+            () => {
+                const volumeSlider = card.querySelector(".volume-slider");
+                isMuted = !isMuted;
+
+                if (!isMuted && volumeSlider.valueAsNumber === 0) {
+                    volumeSlider.value = "0.5";
+                }
+
+                updateVolumeControls(card);
             }
         );
     });

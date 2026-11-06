@@ -560,9 +560,57 @@ body.site-locked #siteContent {
 }
 
 .lyrics-button:focus-visible,
-.pause-button:focus-visible {
+.pause-button:focus-visible,
+.volume-button:focus-visible,
+.volume-slider:focus-visible {
     outline: 3px solid var(--texto);
     outline-offset: 3px;
+}
+
+.volume-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    color: var(--texto);
+    font-size: 0.85rem;
+}
+
+.volume-button {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--texto);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.volume-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+}
+
+.volume-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume-slider {
+    width: 120px;
+    accent-color: #C77FA8;
+    cursor: pointer;
+}
+
+.volume-level {
+    min-width: 3ch;
+    font-variant-numeric: tabular-nums;
 }
 
 .music-dedication {
