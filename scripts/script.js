@@ -218,8 +218,8 @@ openHeartButton.addEventListener("click", () => {
 
     // Alterar o texto do botão.
     openHeartButton.textContent = isOpen
-        ? "Fechar mi corazon ♡"
-        : "Abrir mi corazon ♡";
+        ? "Fechar mi corazon "
+        : "Abrir mi corazon ";
 
     // Atualizar a mensagem.
     finalMessage.textContent = isOpen
@@ -349,9 +349,9 @@ function startVisualTimer() {
     const pauseButton = document.querySelector(".pause-button");
     const status = document.querySelector(".lyrics-status");
 
-    syncButton.textContent = "Sincronizando ♡";
+    syncButton.textContent = "Sincronizando ";
     pauseButton.textContent = "Pausar";
-    status.textContent = "Nossa música está passando... ♡";
+    status.textContent = "Nossa música está passando... ";
 
     const startClock = Date.now();
     const initialTime = currentTime;
@@ -369,8 +369,8 @@ function startVisualTimer() {
         if (currentTime >= currentSong.endAt) {
             stopVisualTimer();
 
-            syncButton.textContent = "Recomeçar ♡";
-            status.textContent = "Um trecho que sempre será nosso. ♡";
+            syncButton.textContent = "Recomeçar ";
+            status.textContent = "Um trecho que sempre será nosso. ";
         }
     }, 100);
 }
@@ -433,7 +433,7 @@ function renderSongs() {
                     `).join("")}
                 </div>
 
-                <p class="lyrics-status">Tudo pronto para nossa música. ♡</p>
+                <p class="lyrics-status">Tudo pronto para nossa música. </p>
             </div>
 
             <div class="music-progress">
@@ -446,7 +446,7 @@ function renderSongs() {
 
             <div class="lyrics-controls">
                 <button class="lyrics-button">
-                    Sincronizar música ♡
+                    Sincronizar música 
                 </button>
 
                 <button class="pause-button">

@@ -338,9 +338,19 @@
     color: #a43f4b;
 }
 
+
 .arvore-mensagens__dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+
     width: min(calc(100% - 2rem), 480px);
     max-width: 480px;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+
     padding: 0;
     border: 0;
     border-radius: 22px;
@@ -353,6 +363,7 @@
     background: rgba(54, 35, 45, .48);
     backdrop-filter: blur(4px);
 }
+
 
 .arvore-mensagens__dialog-conteudo {
     position: relative;
