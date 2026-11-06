@@ -218,8 +218,8 @@ openHeartButton.addEventListener("click", () => {
 
     // Alterar o texto do botão.
     openHeartButton.textContent = isOpen
-        ? "Fechar mi corazon ♡"
-        : "Abrir mi corazon ♡";
+        ? "Fechar mi corazon "
+        : "Abrir mi corazon ";
 
     // Atualizar a mensagem.
     finalMessage.textContent = isOpen
@@ -238,30 +238,42 @@ const songs = [
         title: "Cherry Waves",
         artist: "Deftones",
         cover: "assets/images/musica-01.jpg",
+        audio: "musicas/Cherry Waves.webm",
 
         dedication:
-            "Essa música me lembra você e tudo que sinto quando estamos juntos.",
+            "Essa música me lembra você e tudo que passamos juntos.",
 
         // Trecho escolhido da música, em segundos.
         startAt: 205,
         endAt: 250,
 
         lyrics: [
-            { time: 205, text: "If like, you should stay down beneath" },
+            { time: 205, text: "If like, you should stay down beneath" }, // 3:25
             { time: 217, text: "I'll swim down" },
             { time: 223, text: "Would you?" },
             { time: 226, text: "Is that what you want?" },
-            { time: 230, text: "Would you?" }
+            { time: 230, text: "Would you?" },
+            { time: 234, text: "Is that what you want?" }, // 3:54
+            { time: 238, text: "With you?" },
+            { time: 246, text: "You...."} // 4:06 
+
         ]
     }
 ];
 
 const musicGrid = document.getElementById("musicGrid");
 
-let musicTimer = null;
+const audioPlayer = new Audio();
+audioPlayer.preload = "auto";
+audioPlayer.volume = 0.15;
+
 let currentTime = 0;
 let isPlaying = false;
 let currentSong = null;
+let currentCard = null;
+let playbackFrame = null;
+let isMuted = false;
+let isSyncingAudio = false;
 
 
 /* =========================================
@@ -281,9 +293,9 @@ function formatTime(seconds) {
 ========================================= */
 
 function updateLyrics() {
-    if (!currentSong) return;
+    if (!currentSong || !currentCard) return;
 
-    const lyricLines = document.querySelectorAll(".lyrics-line");
+    const lyricLines = currentCard.querySelectorAll(".lyrics-line");
 
     let activeIndex = -1;
 
@@ -312,7 +324,7 @@ function updateLyrics() {
 ========================================= */
 
 function updatePlayer() {
-    if (!currentSong) return;
+    if (!currentSong || !currentCard) return;
 
     const elapsed = currentTime - currentSong.startAt;
     const duration = currentSong.endAt - currentSong.startAt;
@@ -322,10 +334,10 @@ function updatePlayer() {
         Math.max(0, (elapsed / duration) * 100)
     );
 
-    document.querySelector(".music-progress-fill").style.width =
+    currentCard.querySelector(".music-progress-fill").style.width =
         `${percentage}%`;
 
-    document.querySelector(".music-time").textContent =
+    currentCard.querySelector(".music-time").textContent =
         `${formatTime(currentTime)} / ${formatTime(currentSong.endAt)}`;
 
     updateLyrics();
@@ -333,68 +345,206 @@ function updatePlayer() {
 
 
 /* =========================================
-   7. CONTROLE DO KARAOKÊ VISUAL
+   7. CONTROLE DO ÁUDIO E DO KARAOKÊ
 ========================================= */
 
-function startVisualTimer() {
-    if (!currentSong || isPlaying) return;
-
-    if (currentTime >= currentSong.endAt) {
-        currentTime = currentSong.startAt;
+function waitForAudioMetadata() {
+    if (audioPlayer.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        return Promise.resolve();
     }
 
-    isPlaying = true;
+    if (audioPlayer.error) {
+        return Promise.reject(
+            new Error("O arquivo de áudio não pôde ser carregado.")
+        );
+    }
 
-    const syncButton = document.querySelector(".lyrics-button");
-    const pauseButton = document.querySelector(".pause-button");
-    const status = document.querySelector(".lyrics-status");
+    return new Promise((resolve, reject) => {
+        audioPlayer.addEventListener("loadedmetadata", resolve, { once: true });
+        audioPlayer.addEventListener("error", () => {
+            reject(new Error("O arquivo de áudio não pôde ser carregado."));
+        }, { once: true });
+    });
+}
 
-    syncButton.textContent = "Sincronizando ♡";
-    pauseButton.textContent = "Pausar";
-    status.textContent = "Nossa música está passando... ♡";
+function seekAudio(time) {
+    if (Math.abs(audioPlayer.currentTime - time) < 0.01) {
+        return Promise.resolve();
+    }
 
-    const startClock = Date.now();
-    const initialTime = currentTime;
+    return new Promise((resolve, reject) => {
+        const cleanup = () => {
+            audioPlayer.removeEventListener("seeked", onSeeked);
+            audioPlayer.removeEventListener("error", onError);
+        };
+        const onSeeked = () => {
+            cleanup();
+            resolve();
+        };
+        const onError = () => {
+            cleanup();
+            reject(new Error("Não foi possível sincronizar o trecho do áudio."));
+        };
 
-    musicTimer = setInterval(() => {
-        const elapsed = (Date.now() - startClock) / 1000;
+        audioPlayer.addEventListener("seeked", onSeeked, { once: true });
+        audioPlayer.addEventListener("error", onError, { once: true });
 
-        currentTime = Math.min(
-            initialTime + elapsed,
-            currentSong.endAt
+        try {
+            audioPlayer.currentTime = time;
+        } catch (error) {
+            cleanup();
+            reject(error);
+        }
+    });
+}
+
+async function playSong(song, card, restart) {
+    const isNewSong = currentSong !== song;
+
+    if (isNewSong) {
+        audioPlayer.pause();
+        currentSong = song;
+        currentCard = card;
+        currentTime = song.startAt;
+        audioPlayer.src = song.audio;
+        audioPlayer.load();
+    }
+
+    if (restart || currentTime >= song.endAt) {
+        currentTime = song.startAt;
+    }
+
+    currentCard = card;
+    const status = card.querySelector(".lyrics-status");
+    const targetTime = currentTime;
+    status.textContent = "Carregando música... ";
+
+    try {
+        isSyncingAudio = true;
+        audioPlayer.muted = true;
+        const playbackResult = audioPlayer.play().then(
+            () => null,
+            error => error
         );
 
-        updatePlayer();
-
-        if (currentTime >= currentSong.endAt) {
-            stopVisualTimer();
-
-            syncButton.textContent = "Recomeçar ♡";
-            status.textContent = "Um trecho que sempre será nosso. ♡";
+        await waitForAudioMetadata();
+        await seekAudio(targetTime);
+        const playbackError = await playbackResult;
+        if (playbackError) throw playbackError;
+        if (audioPlayer.paused) {
+            isSyncingAudio = false;
+            audioPlayer.muted = isMuted;
+            return;
         }
-    }, 100);
-}
 
-function stopVisualTimer() {
-    clearInterval(musicTimer);
-
-    musicTimer = null;
-    isPlaying = false;
-
-    const pauseButton = document.querySelector(".pause-button");
-
-    if (pauseButton) {
-        pauseButton.textContent = "Continuar";
+        isSyncingAudio = false;
+        audioPlayer.muted = isMuted;
+        updatePlayer();
+    } catch (error) {
+        isSyncingAudio = false;
+        audioPlayer.muted = isMuted;
+        isPlaying = false;
+        card.querySelector(".pause-button").textContent = "Continuar";
+        status.textContent = `Não foi possível reproduzir o áudio: ${error.message}`;
+        console.error("Erro ao reproduzir a música selecionada:", error);
     }
 }
 
-function toggleVisualTimer() {
+function updateVolumeControls(card) {
+    const volumeSlider = card.querySelector(".volume-slider");
+    const volumeButton = card.querySelector(".volume-button");
+    const volume = volumeSlider.valueAsNumber;
+    const muted = isMuted || volume === 0;
+
+    audioPlayer.volume = volume;
+    audioPlayer.muted = isSyncingAudio || isMuted;
+    volumeSlider.setAttribute("aria-valuetext", `${Math.round(volume * 100)}%`);
+    card.querySelector(".volume-level").textContent =
+        `${Math.round(volume * 100)}%`;
+    volumeButton.textContent = muted ? "🔇" : "🔊";
+    volumeButton.setAttribute(
+        "aria-label",
+        muted ? "Ativar áudio" : "Silenciar áudio"
+    );
+    volumeButton.title = muted ? "Ativar áudio" : "Silenciar áudio";
+}
+
+audioPlayer.addEventListener("play", () => {
+    isPlaying = true;
+    if (!currentCard) return;
+
+    currentCard.querySelector(".pause-button").textContent = "Pausar";
+    currentCard.querySelector(".lyrics-status").textContent =
+        "Nossa música está passando... ";
+
+    if (playbackFrame === null) {
+        playbackFrame = requestAnimationFrame(syncPlaybackFrame);
+    }
+});
+
+audioPlayer.addEventListener("pause", () => {
+    isPlaying = false;
+    if (playbackFrame !== null) {
+        cancelAnimationFrame(playbackFrame);
+        playbackFrame = null;
+    }
+    if (!currentCard || !currentSong) return;
+
+    currentCard.querySelector(".pause-button").textContent = "Continuar";
+    currentCard.querySelector(".lyrics-status").textContent =
+        currentTime >= currentSong.endAt
+            ? "Um trecho que sempre será nosso. "
+            : "Música pausada. Continue quando quiser. ";
+});
+
+function updatePlaybackPosition() {
+    if (!currentSong || audioPlayer.muted) return;
+
+    currentTime = Math.min(audioPlayer.currentTime, currentSong.endAt);
+    updatePlayer();
+
+    if (audioPlayer.currentTime >= currentSong.endAt) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = currentSong.endAt;
+        currentTime = currentSong.endAt;
+        updatePlayer();
+    }
+}
+
+function syncPlaybackFrame() {
+    playbackFrame = null;
+    if (!isPlaying) return;
+
+    updatePlaybackPosition();
+
     if (isPlaying) {
-        stopVisualTimer();
+        playbackFrame = requestAnimationFrame(syncPlaybackFrame);
+    }
+}
+
+audioPlayer.addEventListener("timeupdate", () => {
+    updatePlaybackPosition();
+});
+
+audioPlayer.addEventListener("error", () => {
+    if (!currentCard) return;
+
+    const message = audioPlayer.error?.message
+        || "verifique se o arquivo existe e está em um formato compatível.";
+    currentCard.querySelector(".lyrics-status").textContent =
+        `Não foi possível carregar o áudio: ${message}`;
+    console.error("Erro ao carregar a música selecionada:", audioPlayer.error);
+});
+
+function toggleSongPlayback(song, card) {
+    if (currentSong !== song || currentCard !== card) return;
+
+    if (isPlaying) {
+        audioPlayer.pause();
         return;
     }
 
-    startVisualTimer();
+    playSong(song, card, false);
 }
 
 
@@ -433,7 +583,7 @@ function renderSongs() {
                     `).join("")}
                 </div>
 
-                <p class="lyrics-status">Tudo pronto para nossa música. ♡</p>
+                <p class="lyrics-status">Tudo pronto para nossa música. </p>
             </div>
 
             <div class="music-progress">
@@ -446,7 +596,7 @@ function renderSongs() {
 
             <div class="lyrics-controls">
                 <button class="lyrics-button">
-                    Sincronizar música ♡
+                    Reproduzir música
                 </button>
 
                 <button class="pause-button">
@@ -486,21 +636,33 @@ function renderSongs() {
         card.querySelector(".lyrics-button").addEventListener(
             "click",
             () => {
-                currentSong = song;
-                currentTime = song.startAt;
-
-                stopVisualTimer();
-                updatePlayer();
-                startVisualTimer();
+                playSong(song, card, true);
             }
         );
 
         card.querySelector(".pause-button").addEventListener(
             "click",
             () => {
-                if (currentSong !== song) return;
+                toggleSongPlayback(song, card);
+            }
+        );
 
-                toggleVisualTimer();
+        card.querySelector(".volume-slider").addEventListener(
+            "input",
+            () => updateVolumeControls(card)
+        );
+
+        card.querySelector(".volume-button").addEventListener(
+            "click",
+            () => {
+                const volumeSlider = card.querySelector(".volume-slider");
+                isMuted = !isMuted;
+
+                if (!isMuted && volumeSlider.valueAsNumber === 0) {
+                    volumeSlider.value = "0.15";
+                }
+
+                updateVolumeControls(card);
             }
         );
     });
