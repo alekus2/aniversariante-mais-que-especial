@@ -454,6 +454,28 @@ function renderSongs() {
                 </button>
             </div>
 
+            <div class="volume-controls">
+                <button
+                    class="volume-button"
+                    type="button"
+                    aria-label="Silenciar áudio"
+                    title="Silenciar áudio"
+                >🔊</button>
+                <label class="volume-label">
+                    Volume
+                    <input
+                        class="volume-slider"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value="0.15"
+                        aria-label="Volume do áudio"
+                    >
+                </label>
+                <span class="volume-level" aria-live="polite">15%</span>
+            </div>
+
             <p class="music-dedication">
                 ${song.dedication}
             </p>
