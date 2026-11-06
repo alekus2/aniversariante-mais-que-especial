@@ -265,7 +265,7 @@ const musicGrid = document.getElementById("musicGrid");
 
 const audioPlayer = new Audio();
 audioPlayer.preload = "auto";
-audioPlayer.volume = 0.25;
+audioPlayer.volume = 0.15;
 
 let currentTime = 0;
 let isPlaying = false;
@@ -619,7 +619,7 @@ function renderSongs() {
                         min="0"
                         max="1"
                         step="0.01"
-                        value="0.25"
+                        value="0.15"
                         aria-label="Volume do áudio"
                     >
                 </label>
@@ -659,7 +659,7 @@ function renderSongs() {
                 isMuted = !isMuted;
 
                 if (!isMuted && volumeSlider.valueAsNumber === 0) {
-                    volumeSlider.value = "0.25";
+                    volumeSlider.value = "0.15";
                 }
 
                 updateVolumeControls(card);
