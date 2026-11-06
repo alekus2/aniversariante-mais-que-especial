@@ -254,6 +254,7 @@ const songs = [
             { time: 226, text: "Is that what you want?" },
             { time: 230, text: "Would you?" },
             { time: 234, text: "Is that what you want?" }, // 3:54
+            { time: 238, text: "With you?" },
             { time: 246, text: "You...."} // 4:06 
 
         ]
@@ -264,7 +265,7 @@ const musicGrid = document.getElementById("musicGrid");
 
 const audioPlayer = new Audio();
 audioPlayer.preload = "auto";
-audioPlayer.volume = 0.5;
+audioPlayer.volume = 0.25;
 
 let currentTime = 0;
 let isPlaying = false;
