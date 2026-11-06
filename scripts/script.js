@@ -409,6 +409,7 @@ async function playSong(song, card, restart) {
 
     currentCard = card;
     const status = card.querySelector(".lyrics-status");
+    const targetTime = currentTime;
     status.textContent = "Carregando música... ";
 
     try {
@@ -419,9 +420,10 @@ async function playSong(song, card, restart) {
         );
 
         await waitForAudioMetadata();
-        await seekAudio(currentTime);
+        await seekAudio(targetTime);
         const playbackError = await playbackResult;
         if (playbackError) throw playbackError;
+        if (audioPlayer.paused) return;
 
         audioPlayer.muted = false;
         updatePlayer();
@@ -463,7 +465,7 @@ audioPlayer.addEventListener("pause", () => {
 });
 
 function updatePlaybackPosition() {
-    if (!currentSong) return;
+    if (!currentSong || audioPlayer.muted) return;
 
     currentTime = Math.min(audioPlayer.currentTime, currentSong.endAt);
     updatePlayer();
