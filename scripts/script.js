@@ -2,60 +2,60 @@
    0. BLOQUEADOR DE SITE
 ========================================= */
 
-const siteUnlockAt = new Date("2026-11-06T00:00:00-04:00");
+// const siteUnlockAt = new Date("2026-11-06T00:00:00-04:00");
 
-const siteContent = document.getElementById("siteContent");
-const siteLock = document.getElementById("siteLock");
-const siteCountdown = document.getElementById("siteCountdown");
+// const siteContent = document.getElementById("siteContent");
+// const siteLock = document.getElementById("siteLock");
+// const siteCountdown = document.getElementById("siteCountdown");
 
-let siteLockInterval = null;
+// let siteLockInterval = null;
 
-function updateSiteLock() {
-    if (!siteContent || !siteLock || !siteCountdown) return;
+// function updateSiteLock() {
+//     if (!siteContent || !siteLock || !siteCountdown) return;
 
-    const remaining = siteUnlockAt.getTime() - Date.now();
+//     const remaining = siteUnlockAt.getTime() - Date.now();
 
-    if (remaining <= 0) {
-        document.body.classList.remove("site-locked");
+//     if (remaining <= 0) {
+//         document.body.classList.remove("site-locked");
 
-        siteContent.removeAttribute("inert");
+//         siteContent.removeAttribute("inert");
 
-        siteLock.hidden = true;
+//         siteLock.hidden = true;
 
-        if (siteLockInterval !== null) {
-            clearInterval(siteLockInterval);
-        }
+//         if (siteLockInterval !== null) {
+//             clearInterval(siteLockInterval);
+//         }
 
-        return;
-    }
+//         return;
+//     }
 
-    document.body.classList.add("site-locked");
+//     document.body.classList.add("site-locked");
 
-    siteContent.setAttribute("inert", "");
+//     siteContent.setAttribute("inert", "");
 
-    siteLock.hidden = false;
+//     siteLock.hidden = false;
 
-    const totalSeconds = Math.floor(remaining / 1000);
+//     const totalSeconds = Math.floor(remaining / 1000);
 
-    const days = Math.floor(totalSeconds / 86400);
+//     const days = Math.floor(totalSeconds / 86400);
 
-    const hours = Math.floor((totalSeconds % 86400) / 3600);
+//     const hours = Math.floor((totalSeconds % 86400) / 3600);
 
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
+//     const minutes = Math.floor((totalSeconds % 3600) / 60);
 
-    const seconds = totalSeconds % 60;
+//     const seconds = totalSeconds % 60;
 
-    const format = number => String(number).padStart(2, "0");
+//     const format = number => String(number).padStart(2, "0");
 
-    siteCountdown.textContent =
-        `${days}d ${format(hours)}h ${format(minutes)}m ${format(seconds)}s`;
-}
+//     siteCountdown.textContent =
+//         `${days}d ${format(hours)}h ${format(minutes)}m ${format(seconds)}s`;
+// }
 
-updateSiteLock();
+// updateSiteLock();
 
-if (siteUnlockAt.getTime() > Date.now()) {
-    siteLockInterval = setInterval(updateSiteLock, 1000);
-}
+// if (siteUnlockAt.getTime() > Date.now()) {
+//     siteLockInterval = setInterval(updateSiteLock, 1000);
+// }
 
 
 /* =========================================
